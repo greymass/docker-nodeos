@@ -1,0 +1,10 @@
+version: '3.6'
+services:
+    nodeos:
+        build: .
+        env_file:
+            - configs/nodeos.env
+        ports:
+            - 8888:8888
+        tmpfs:
+            - /ramdisk:defaults,nosuid,nodev,noatime,nodiratime,exec,size=64G
