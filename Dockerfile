@@ -8,8 +8,14 @@ RUN mkdir /eosio
 RUN mkdir /eosio/build
 RUN mkdir /eosio/downloads
 
+# setup build time variables
+ARG NODEOS_REPOSITORY
+ENV NODEOS_REPOSITORY $NODEOS_REPOSITORY
+ARG NODEOS_VERSION
+ENV NODEOS_VERSION $NODEOS_VERSION
+
 # build nodeos
-RUN git clone https://github.com/EOSIO/eos.git /eosio/build
+RUN git clone $NODEOS_REPOSITORY /eosio/build
 WORKDIR /eosio/build
 RUN git checkout $NODEOS_VERSION
 RUN git submodule update --init --recursive

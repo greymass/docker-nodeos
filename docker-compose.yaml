@@ -1,9 +1,13 @@
 version: '3.6'
 services:
     nodeos:
-        build: .
+        build: 
+            context: .
+            args:
+                - NODEOS_REPOSITORY=${NODEOS_REPOSITORY}
+                - NODEOS_VERSION=${NODEOS_VERSION}
         env_file:
-            - configs/nodeos.env
+            - .env
         ports:
             - 8888:8888
         tmpfs:

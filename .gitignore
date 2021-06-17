@@ -1,2 +1,2 @@
-configs/nodeos.env
+.env
 configs/config.ini
