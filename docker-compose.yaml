@@ -8,8 +8,25 @@ services:
                 - NODEOS_VERSION=${NODEOS_VERSION}
         env_file:
             - .env
-        ports:
-            - 8888:8888 # Uncomment to expose the http api
-            - 9876:9876 # Uncomment to expose the p2p network
+        expose: [8888]
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.nodeos.rule=Host(`nodeos.docker.localhost`)
+            - traefik.http.services.nodeos.loadbalancer.server.port=8888
         tmpfs:
             - /ramdisk:defaults,nosuid,nodev,noatime,nodiratime,exec,size=64G
+    traefik:
+        image: "traefik:v2.4"
+        command:
+            - "--accesslog"
+            - "--accesslog.filepath=/var/log/traefik/access.log"
+            - "--api.insecure=true"
+            - "--providers.docker=true"
+            - "--providers.docker.exposedbydefault=false"
+        ports:
+            - "80:80"
+            - "8080:8080"
+        volumes:
+            - "./traefik:/var/log/traefik"
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
+            

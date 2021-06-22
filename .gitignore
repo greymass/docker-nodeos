@@ -1,2 +1,3 @@
 .env
 configs/config.ini
+traefik/*.log
