@@ -9,8 +9,7 @@ services:
         env_file:
             - .env
         ports:
-            - 8888:8888
+            - 8888:8888 # Uncomment to expose the http api
+            - 9876:9876 # Uncomment to expose the p2p network
         tmpfs:
             - /ramdisk:defaults,nosuid,nodev,noatime,nodiratime,exec,size=64G
-        volumes:
-            - ./shared:/eosio/shared
