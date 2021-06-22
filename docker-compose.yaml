@@ -12,3 +12,5 @@ services:
             - 8888:8888
         tmpfs:
             - /ramdisk:defaults,nosuid,nodev,noatime,nodiratime,exec,size=64G
+        volumes:
+            - ./shared:/eosio/shared
