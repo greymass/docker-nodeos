@@ -29,6 +29,9 @@ COPY configs/config.ini /eosio/base.ini
 COPY scripts/start.sh /eosio/start.sh
 RUN chmod +x /eosio/start.sh
 
+# DEBUG: copy snapshot from local into build to prevent redownloading
+# COPY downloads/latest.tar.gz /eosio/downloads/snapshot.tar.gz
+
 # start nodeos
 WORKDIR /eosio
 CMD ["/eosio/start.sh"]
