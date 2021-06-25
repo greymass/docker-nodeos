@@ -1,22 +1,33 @@
 #!/usr/bin/env bash
 
 # Grab latest snapshot
-echo "Downloading snapshot from $NODEOS_SNAPSHOT"
+echo "downloading snapshot from $NODEOS_SNAPSHOT"
 cd /eosio/downloads
 curl -s -o /eosio/downloads/snapshot.tar.gz $NODEOS_SNAPSHOT
 tar -xvf /eosio/downloads/snapshot.tar.gz
 rm /eosio/downloads/snapshot.tar.gz
 mv /eosio/downloads/*.bin /eosio/downloads/snapshot.bin
-echo "Snapshot download complete!"
+echo "snapshot downloaded and extracted!"
 
-# Append P2P information to configuration
-echo "Appending peer information and generating config.ini"
+# Creating p2p portion of the config
+echo "generating p2p information for config..."
 for peer in $NODEOS_PEERS
 do
     echo p2p-peer-address = $peer  >> /eosio/peers.ini
 done
-cat /eosio/peers.ini /eosio/base.ini >> /eosio/config.ini
-echo "config.ini generated!"
+
+# Creating unix sock name based on container scaling
+IP=`ifconfig eth0 | grep 'inet ' | awk '{print $2}'`
+INDEX=`dig -x $IP +short | sed 's/.*_\([0-9]*\)\..*/\1/'`
+NODEOS_SOCK=/eosio/shared/$NETWORK_NAME$INDEX.sock
+echo "generating unique unix sock file name ($NODEOS_SOCK)"
+echo unix-socket-path = $NODEOS_SOCK >> /eosio/sock.ini
+touch $NODEOS_SOCK
+chmod 777 $NODEOS_SOCK
+
+# Combine all configs to final version
+cat /eosio/peers.ini /eosio/sock.ini /eosio/base.ini >> /eosio/config.ini
+echo "config.ini generation complete!"
 
 # Start based on snapshot
 echo "starting nodeos..."

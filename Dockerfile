@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
 # install required software
-RUN apt-get update && apt-get install -y curl git
+RUN apt-get update && apt-get install -y curl git dnsutils net-tools
 
 # setup folder structure
 RUN mkdir /eosio
