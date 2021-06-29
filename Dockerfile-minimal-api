@@ -23,7 +23,7 @@ RUN ./scripts/eosio_build.sh -y
 RUN cp /eosio/build/build/programs/nodeos/nodeos /eosio/nodeos
 
 # configure nodeos
-COPY ../configs/config.ini /eosio/base.ini
+COPY configs/config.ini /eosio/base.ini
 
 # copy startup script
 COPY scripts/entrypoint-minimal-api.sh /eosio/entrypoint.sh
