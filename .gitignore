@@ -1,3 +1,6 @@
 .env
 configs/config.ini
+configs/nginx.conf
 downloads
+shared/nginx/*.conf
+shared/nodeos/*.sock
