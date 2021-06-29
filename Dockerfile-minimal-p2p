@@ -1,0 +1,37 @@
+FROM ubuntu:18.04
+
+# install required software
+RUN apt-get update && apt-get install -y curl git dnsutils net-tools
+
+# setup folder structure
+RUN mkdir /eosio
+RUN mkdir /eosio/build
+RUN mkdir /eosio/downloads
+
+# setup build time variables
+ARG NODEOS_REPOSITORY
+ENV NODEOS_REPOSITORY $NODEOS_REPOSITORY
+ARG NODEOS_VERSION
+ENV NODEOS_VERSION $NODEOS_VERSION
+
+# build nodeos
+RUN git clone $NODEOS_REPOSITORY /eosio/build
+WORKDIR /eosio/build
+RUN git checkout $NODEOS_VERSION
+RUN git submodule update --init --recursive
+RUN ./scripts/eosio_build.sh -y
+RUN cp /eosio/build/build/programs/nodeos/nodeos /eosio/nodeos
+
+# configure nodeos
+COPY configs/config.ini /eosio/base.ini
+
+# copy startup script
+COPY scripts/entrypoint-minimal-p2p.sh /eosio/entrypoint.sh
+RUN chmod +x /eosio/entrypoint.sh
+
+# DEBUG: copy snapshot from local into build to prevent redownloading
+# COPY downloads/latest.tar.gz /eosio/downloads/snapshot.tar.gz
+
+# start nodeos
+WORKDIR /eosio
+CMD ["/eosio/entrypoint.sh"]

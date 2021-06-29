@@ -1,0 +1,9 @@
+version: '3.6'
+################################################################################
+### EXAMPLE: Override build configuration to run a p2p only node
+################################################################################
+# services:
+#     nodeos:
+#         extends:
+#             file: ./configs/docker/nodeos-minimal-p2p.yaml
+#             service: nodeos

@@ -16,14 +16,17 @@ do
     echo p2p-peer-address = $peer  >> /eosio/peers.ini
 done
 
-# Creating unix sock name based on container scaling
+# Creating unix sock name based on container scaling index
 IP=`ifconfig eth0 | grep 'inet ' | awk '{print $2}'`
 INDEX=`dig -x $IP +short | sed 's/.*_\([0-9]*\)\..*/\1/'`
-NODEOS_SOCK=/eosio/shared/$NETWORK_NAME$INDEX.sock
+NODEOS_SOCK=/eosio/shared/nodeos/$NETWORK_NAME$INDEX.sock
 echo "generating unique unix sock file name ($NODEOS_SOCK)"
 echo unix-socket-path = $NODEOS_SOCK >> /eosio/sock.ini
 touch $NODEOS_SOCK
 chmod 777 $NODEOS_SOCK
+
+# Create nginx upstream entry for this server
+echo "server unix:$NODEOS_SOCK fail_timeout=1 max_fails=3 weight=65535;" > /eosio/shared/nginx/$NETWORK_NAME$INDEX.conf
 
 # Combine all configs to final version
 cat /eosio/peers.ini /eosio/sock.ini /eosio/base.ini >> /eosio/config.ini

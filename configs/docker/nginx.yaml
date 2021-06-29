@@ -1,0 +1,11 @@
+version: '3.6'
+services:
+    nginx:
+        env_file:
+            - ../../.env
+        image: nginx:latest
+        ports:
+            - "${NETWORK_PORT_API}:8888"
+        volumes:
+            - ../nginx.conf:/etc/nginx/nginx.conf:ro
+            - ../../shared:/eosio/shared

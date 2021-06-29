@@ -1,17 +1,17 @@
 version: '3.6'
 services:
     nodeos:
-        build: 
-            context: .
-            args:
-                - NODEOS_REPOSITORY=${NODEOS_REPOSITORY}
-                - NODEOS_VERSION=${NODEOS_VERSION}
         env_file:
             - .env
-        ports:
-            - 8888:8888 # Uncomment to expose the http api
-            - 9876:9876 # Uncomment to expose the p2p network
-        tmpfs:
-            - /ramdisk:defaults,nosuid,nodev,noatime,nodiratime,exec,size=64G
+        extends:
+            file: ./configs/docker/nodeos-minimal-api.yaml
+            service: nodeos
         volumes:
             - ./shared:/eosio/shared
+    nginx:
+        depends_on:
+            - nodeos
+        extends:
+            file: ./configs/docker/nginx.yaml
+            service: nginx
+        profiles: ["nginx"]

@@ -1,0 +1,16 @@
+version: '3.6'
+services:
+    nodeos:
+        build: 
+            args:
+                - NODEOS_REPOSITORY=${NODEOS_REPOSITORY}
+                - NODEOS_VERSION=${NODEOS_VERSION}
+            context: ../..
+            dockerfile: Dockerfile-minimal-api
+        expose: 
+            - 8888
+            - 9876
+        tmpfs:
+            - /ramdisk:defaults,nosuid,nodev,noatime,nodiratime,exec,size=64G
+        volumes:
+            - ../../shared:/eosio/shared
