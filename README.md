@@ -45,64 +45,6 @@ cp configs/nodeos/example-minimal-api.config.ini configs/config.ini
 
 This file is your standard nodeos configuration. More information is available on the [official documentation](https://developers.eos.io/manuals/eos/v2.0/nodeos/usage/nodeos-configuration).
 
-```
-cp configs/nginx/nginx.conf configs/nginx.conf
-```
-
-This is an nginx configuration set to access and load balance the nodeos containers created by docker-compose. By default each `nodeos` container will create an upstream entry for its unix domain socket in `./shared/nginx`, which nginx will load and use to serve traffic. 
-
-# Predefined Configurations
-
-A number of configurations have been setup for different methods of operation. Listed below are list of these configurations as well as the commands to quickly spin up that instance type.
-
-### API (Minimal)
-
-This is the default configuration shown in the documentation above. This type of configuration launches one or more nodeos processes from a snapshot and load balances API requests between them. They also are configured to only keep 1 days worth of recent blocks and have the account query API enabled. 
-
-This API configuration is meant to serve out most requests, with the exception being they won't be able to serve out older blocks (v1/chain/get_block). 
-
-```bash
-cp configs/nodeos/example-minimal-api.config.ini configs/config.ini
-```
-
-### P2P Relay (Minimal)
-
-This configuration launches a single nodeos instance from a snapshot with only the p2p network enabled. This can be used as a p2p relay for multiple API node instances to prevent excess network chatter. Since it is launched from a snapshot it won't be useful in resyncing blocks to other nodes in the p2p network.
-
-To use this repository to setup one of these instances, copy and modify the configuration for nodeos. Perform this command from the root directly of the repository:
-
-```bash
-cp configs/nodeos/example-minimal-p2p.config.ini configs/config.ini
-```
-
-Once copied, edit this new configuration file if needed.
-
-Next up is setting up the `.env` file.
-
-```bash
-cp configs/docker/default.env .env
-```
-
-Edit this file to configure any docker parameters required.
-
-Then modify the `docker-compose.override.yaml` file to contain the following information:
-
-```yaml
-version: '3.6'
-services:
-    nodeos:
-        extends:
-            file: ./configs/docker/nodeos-minimal-p2p.yaml
-            service: nodeos
-```
-
-Then start it up:
-
-```
-docker-compose --profile p2p up
-```
-
-
 # Build the container
 
 During your first run and any time afterwards which you make changes to the configuration files, you'll need to rebuild the containers. Run the following command to kick off the build process.
@@ -121,11 +63,6 @@ docker-compose up -d
 
 The nodeos instance within the container will bind to the ports on the host as defined in the `docker-compose.yaml` file. 
 
-# Reload nginx upstreams
-
-```
-docker-compose exec nginx nginx -s reload
-```
 
 # Stop the container
 
@@ -134,3 +71,94 @@ If you need to stop the container:
 ```
 docker-compose down
 ```
+
+# Additional Predefined Configurations
+
+A number of configurations have been setup for different methods of operation. Listed below are list of these configurations as well as the commands to quickly spin up that instance type.
+
+### API (Minimal)
+
+This is the default configuration shown in the documentation above. This type of configuration launches one or more nodeos processes from a snapshot and load balances API requests between them. They also are configured to only keep 1 days worth of recent blocks and have the account query API enabled. 
+
+This API configuration is meant to serve out most requests, with the exception being they won't be able to serve out older blocks (v1/chain/get_block). 
+
+```bash
+cp configs/docker/default.env .env
+cp configs/nodeos/example-minimal-api.config.ini configs/config.ini
+```
+
+Once copied, edit these configuration files (if needed). 
+
+If you had previously used the `docker-compose.override.yaml` file for another configuration, clear that out.
+
+```bash
+git reset --hard docker-compose.override.yaml
+```
+
+Then build, and start it up:
+
+```
+docker-compose build
+docker-compose up
+```
+
+### API (Minimal) + nginx
+
+The above configuration can also be used to scale up multiple API instances, which can be load balanced behind nginx. To use this configuration you'll need to copy the example `nginx.conf` into place and make any modifications you may need.
+
+```bash
+cp configs/nginx/nginx.conf configs/nginx.conf
+```
+
+When starting, you'll just need to pass an extra parameter into the `docker-compose up` command outlined in the previous example. 
+
+```bash
+docker-compose build
+docker-compose --profile nginx up
+```
+
+If you'd like to scale up to multiple instances, you'll use the `--scale` option in the `docker-compose up` command.
+
+```bash
+docker-compose build
+docker-compose --profile nginx up --scale nodeos=2
+```
+
+
+
+### P2P Relay (Minimal)
+
+This configuration launches a single nodeos instance from a snapshot with only the p2p network enabled. This can be used as a p2p relay for multiple API node instances to prevent excess network chatter. Since it is launched from a snapshot it won't be useful in resyncing blocks to other nodes in the p2p network.
+
+To use this repository to setup one of these instances, copy and modify the configuration for nodeos. Perform these commands from the root directly of the repository:
+
+```bash
+cp configs/docker/default.env .env
+cp configs/nodeos/example-minimal-p2p.config.ini configs/config.ini
+```
+
+Once copied, edit these configuration files (if needed). 
+
+Then modify the `docker-compose.override.yaml` file to contain the following information:
+
+```yaml
+version: '3.6'
+services:
+    nodeos:
+        extends:
+            file: ./configs/docker/nodeos-minimal-p2p.yaml
+            service: nodeos
+```
+
+Then build, and start it up:
+
+```
+docker-compose build
+docker-compose up
+```
+# Reload nginx upstreams
+
+```
+docker-compose exec nginx nginx -s reload
+```
+
