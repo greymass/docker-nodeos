@@ -1,9 +1,19 @@
+#########
+# This is a standard Caddyfile
+# 
+# More information about the configuration options can be found here:
+#   - https://caddyserver.com/docs/caddyfile
+#########
+
 {
+    # Administrative interface is shared in the docker network for nodeos containers to manage themselves
     admin 0.0.0.0:2019
 }
 
+# CHANGE `jungle.your-domain.com` to the domain/address you want to use
 jungle.your-domain.com {
     reverse_proxy * {
+        # upstreams are intentionally left blank since the containers add themselves here
     }
     tls {
         dns route53
