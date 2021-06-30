@@ -6,6 +6,8 @@ services:
             dockerfile: Dockerfile-caddy
         env_file:
             - ../../.env
+        expose:
+            - "2019"
         restart: unless-stopped
         ports:
             - "80:80"

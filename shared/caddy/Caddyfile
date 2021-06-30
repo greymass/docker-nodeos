@@ -1,3 +1,7 @@
+{
+    admin 0.0.0.0:2019
+}
+
 jungle.greymass.network {
     reverse_proxy * unix//eosio/shared/nodeos/*.sock
     tls {
