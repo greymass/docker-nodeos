@@ -29,7 +29,12 @@ chmod 777 $NODEOS_SOCK
 echo "server unix:$NODEOS_SOCK fail_timeout=1 max_fails=3 weight=65535;" > /eosio/shared/nginx/$NETWORK_NAME$INDEX.conf
 
 # Dynamically add upstream for caddy
-curl -X POST caddy:2019/config/apps/http/servers/srv0/routes/0/handle/0/routes/0/handle/0/upstreams/$INDEX -H "Content-Type: application/json" -d "{\"dial\": \"unix//eosio/shared/nodeos/$NETWORK_NAME$INDEX.sock\"}"
+UPSTREAMS=`curl -s caddy:2019/config/apps/http/servers/srv0/routes/0/handle/0/routes/0/handle/0/upstreams`
+if [ "$UPSTREAMS" = "null" ]
+then
+    curl -s -X POST caddy:2019/config/apps/http/servers/srv0/routes/0/handle/0/routes/0/handle/0/upstreams -H "Content-Type: application/json" -d "[]"
+fi
+curl -s -X POST caddy:2019/config/apps/http/servers/srv0/routes/0/handle/0/routes/0/handle/0/upstreams/$INDEX -H "Content-Type: application/json" -d "{\"dial\": \"unix//eosio/shared/nodeos/$NETWORK_NAME$INDEX.sock\"}"
 
 # Combine all configs to final version
 cat /eosio/peers.ini /eosio/sock.ini /eosio/base.ini >> /eosio/config.ini
