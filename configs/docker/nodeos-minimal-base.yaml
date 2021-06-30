@@ -1,0 +1,18 @@
+version: '3.6'
+services:
+    nodeos:
+        build: 
+            args:
+                - NODEOS_REPOSITORY=${NODEOS_REPOSITORY}
+                - NODEOS_VERSION=${NODEOS_VERSION}
+            context: ../..
+        expose: 
+            - 8888
+            - 9876
+        tmpfs:
+            - /ramdisk:defaults,nosuid,nodev,noatime,nodiratime,exec,size=64G
+        ulimits:
+            nproc: 1048576
+            nofile:
+                soft: 1048576
+                hard: 1048576

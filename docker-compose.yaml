@@ -6,8 +6,6 @@ services:
         extends:
             file: ./configs/docker/nodeos-minimal-api.yaml
             service: nodeos
-        volumes:
-            - ./shared:/eosio/shared
     nginx:
         depends_on:
             - nodeos

@@ -1,6 +1,6 @@
 version: '3.6'
 ################################################################################
-### EXAMPLE: Override build configuration to run a p2p only node
+### EXAMPLE: Use p2p build configuration to run a p2p only node
 ################################################################################
 # services:
 #     nodeos:
