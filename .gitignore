@@ -4,6 +4,7 @@ configs/nginx.conf
 downloads
 shared/nginx/*.conf
 shared/nodeos/*.sock
+shared/caddy/Caddyfile
 shared/caddy/config/*
 shared/caddy/data/*
 
