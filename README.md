@@ -124,7 +124,20 @@ docker-compose build
 docker-compose --profile nginx up --scale nodeos=2
 ```
 
+### API (Minimal) + caddy (automatic ssl through aws/route53)
 
+Caddy can also be used instead of nginx to allow for automatic ssl renewals and dynamic upstreams. To use this configuration you'll need to copy the example `Caddyfile` into place and make modifications as needed.
+
+```bash
+cp configs/caddy/Caddyfile shared/caddy/Caddyfile
+```
+
+When starting, you'll just need to pass an extra parameter into the `docker-compose up` command outlined in the previous example. 
+
+```bash
+docker-compose build
+docker-compose --profile caddy up
+```
 
 ### P2P Relay (Minimal)
 
