@@ -1,5 +1,5 @@
 jungle.greymass.network {
-    reverse_proxy * unix//eosio/shared/nodeos/jungle1.sock
+    reverse_proxy * unix//eosio/shared/nodeos/*.sock
     tls {
         dns route53
     }
