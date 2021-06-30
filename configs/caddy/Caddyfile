@@ -2,7 +2,7 @@
     admin 0.0.0.0:2019
 }
 
-jungle.greymass.network {
+jungle.your-domain.com {
     reverse_proxy * {
     }
     tls {
