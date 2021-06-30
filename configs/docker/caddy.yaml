@@ -15,3 +15,4 @@ services:
             - ../../shared/caddy/site:/srv
             - ../../shared/caddy/data:/data
             - ../../shared/caddy/config:/config
+            - ../../shared:/eosio/shared
