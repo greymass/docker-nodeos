@@ -1,0 +1,9 @@
+jungle.greymass.network {
+    reverse_proxy * unix//eosio/shared/nodeos/jungle1.sock
+    tls {
+        dns route53 {
+            max_retries 10
+            aws_profile "default"
+        }
+    }
+}

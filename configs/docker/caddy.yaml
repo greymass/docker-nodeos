@@ -1,0 +1,17 @@
+version: '3.6'
+services:
+    caddy:
+        build: 
+            context: ../..
+            dockerfile: Dockerfile-caddy
+        env_file:
+            - ../../.env
+        restart: unless-stopped
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ../../shared/caddy/Caddyfile:/etc/caddy/Caddyfile
+            - ../../shared/caddy/site:/srv
+            - ../../shared/caddy/data:/data
+            - ../../shared/caddy/config:/config

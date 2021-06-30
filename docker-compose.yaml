@@ -6,6 +6,13 @@ services:
         extends:
             file: ./configs/docker/nodeos-minimal-api.yaml
             service: nodeos
+    caddy:
+        depends_on:
+            - nodeos
+        extends:
+            file: ./configs/docker/caddy.yaml
+            service: caddy
+        profiles: ["caddy"]
     nginx:
         depends_on:
             - nodeos

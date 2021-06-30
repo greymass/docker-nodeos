@@ -35,4 +35,5 @@ echo "config.ini generation complete!"
 # Start based on snapshot
 echo "starting nodeos..."
 cd /eosio
-/eosio/nodeos --data-dir=/ramdisk --config-dir=. --snapshot=/eosio/downloads/snapshot.bin
+watch ls /eosio
+# /eosio/nodeos --data-dir=/ramdisk --config-dir=. --snapshot=/eosio/downloads/snapshot.bin
