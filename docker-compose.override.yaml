@@ -7,3 +7,12 @@ version: '3.6'
 #         extends:
 #             file: ./configs/docker/nodeos-minimal-p2p.yaml
 #             service: nodeos
+
+################################################################################
+### EXAMPLE: Use transaction sampler build configuration
+################################################################################
+# services:
+#     nodeos:
+#         extends:
+#             file: ./configs/docker/nodeos-minimal-sampler.yaml
+#             service: nodeos

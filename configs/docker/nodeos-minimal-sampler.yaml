@@ -1,0 +1,10 @@
+version: '3.6'
+services:
+    nodeos:
+        build: 
+            dockerfile: Dockerfile-minimal-sampler
+        extends:
+            file: ./nodeos-minimal-base.yaml
+            service: nodeos
+        volumes:
+            - ../../shared:/eosio/shared

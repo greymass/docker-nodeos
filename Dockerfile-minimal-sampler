@@ -26,7 +26,7 @@ RUN cp /eosio/build/build/programs/nodeos/nodeos /eosio/nodeos
 COPY configs/config.ini /eosio/base.ini
 
 # copy startup script
-COPY scripts/entrypoint-minimal-api.sh /eosio/entrypoint.sh
+COPY scripts/entrypoint-minimal-sampler.sh /eosio/entrypoint.sh
 RUN chmod +x /eosio/entrypoint.sh
 
 # DEBUG: copy snapshot from local into build to prevent redownloading
