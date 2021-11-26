@@ -6,6 +6,7 @@ services:
         image: nginx:latest
         ports:
             - "${NETWORK_PORT_API}:8888"
+            - "${NETWORK_PORT_P2P}:9876"
         volumes:
             - ../nginx.conf:/etc/nginx/nginx.conf:ro
             - ../../shared:/eosio/shared
