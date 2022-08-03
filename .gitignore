@@ -4,3 +4,4 @@ configs/nginx.conf
 downloads
 shared/nginx/*.conf
 shared/nodeos/*.sock
+certbot/*

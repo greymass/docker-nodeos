@@ -7,6 +7,17 @@ services:
         ports:
             - "${NETWORK_PORT_API}:8888"
             - "${NETWORK_PORT_P2P}:9876"
+            - 80:80
+            - 443:443
+        restart: always
         volumes:
             - ../nginx.conf:/etc/nginx/nginx.conf:ro
             - ../../shared:/eosio/shared
+            - /opt/eosio/src/docker-nodeos/certbot/www/:/var/www/certbot/:rw
+            - /opt/eosio/src/docker-nodeos/certbot/conf/:/etc/nginx/ssl/:rw
+            - /opt/eosio/src/docker-nodeos/certbot/letsencrypt/:/etc/letsencrypt/:rw
+        logging:
+            options:
+                max-size: "10m"
+                max-file: "3"
+
