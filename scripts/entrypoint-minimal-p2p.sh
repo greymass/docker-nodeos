@@ -3,10 +3,25 @@
 # Grab latest snapshot
 echo "downloading snapshot from $NODEOS_SNAPSHOT"
 cd /eosio/downloads
-curl -s -o /eosio/downloads/snapshot.tar.gz $NODEOS_SNAPSHOT
-tar -xvf /eosio/downloads/snapshot.tar.gz
-rm /eosio/downloads/snapshot.tar.gz
-mv /eosio/downloads/*.bin /eosio/downloads/snapshot.bin
+case "$NODEOS_SNAPSHOT" in
+*.tar.gz | *.tgz ) 
+        curl -s -o /eosio/downloads/snapshot.tar.gz $NODEOS_SNAPSHOT
+        tar -xvf /eosio/downloads/snapshot.tar.gz
+        rm /eosio/downloads/snapshot.tar.gz
+        mv /eosio/downloads/*.bin /eosio/downloads/snapshot.bin        
+        ;;
+*.zst )
+        curl -s -o /eosio/downloads/snapshot.zst $NODEOS_SNAPSHOT
+        apt install zstd
+        zstd -d /eosio/downloads/snapshot.zst
+        rm /eosio/downloads/snapshot.zst
+        mv /eosio/downloads/snapshot /eosio/downloads/snapshot.bin
+        ;;
+*)
+        echo "Unknown snapshot format!"
+        exit 1
+        ;;
+esac
 echo "snapshot downloaded and extracted!"
 
 # Creating p2p portion of the config

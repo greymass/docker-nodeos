@@ -1,7 +1,7 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 # install required software
-RUN apt-get update && apt-get install -y curl git dnsutils net-tools
+RUN apt-get update --fix-missing && DEBIAN_FRONTEND=noninteractive apt-get install -y curl git dnsutils net-tools
 
 # setup folder structure
 RUN mkdir /eosio
@@ -15,12 +15,12 @@ ARG NODEOS_VERSION
 ENV NODEOS_VERSION $NODEOS_VERSION
 
 # build nodeos
-RUN git clone $NODEOS_REPOSITORY /eosio/build
 WORKDIR /eosio/build
-RUN git checkout $NODEOS_VERSION
+RUN git clone -b $NODEOS_VERSION $NODEOS_REPOSITORY /eosio/build
 RUN git submodule update --init --recursive
-RUN apt-get update --fix-missing && ./scripts/eosio_build.sh -y
+RUN ./scripts/install_deps.sh && ./scripts/pinned_build.sh /eosio/deps /eosio/build/build $(nproc)
 RUN cp /eosio/build/build/programs/nodeos/nodeos /eosio/nodeos
+RUN rm -rf /eosio/build/build /eosio/build/deps
 
 # configure nodeos
 COPY configs/config.ini /eosio/base.ini
@@ -28,9 +28,6 @@ COPY configs/config.ini /eosio/base.ini
 # copy startup script
 COPY scripts/entrypoint-minimal-p2p.sh /eosio/entrypoint.sh
 RUN chmod +x /eosio/entrypoint.sh
-
-# DEBUG: copy snapshot from local into build to prevent redownloading
-# COPY downloads/latest.tar.gz /eosio/downloads/snapshot.tar.gz
 
 # start nodeos
 WORKDIR /eosio
