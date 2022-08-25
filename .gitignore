@@ -1,5 +1,6 @@
 .env
 configs/config.ini
+configs/logging.json
 configs/nginx.conf
 downloads
 shared/nginx/*.conf
