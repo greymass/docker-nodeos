@@ -29,6 +29,10 @@ COPY configs/config.ini /eosio/base.ini
 COPY scripts/entrypoint-minimal-sampler.sh /eosio/entrypoint.sh
 RUN chmod +x /eosio/entrypoint.sh
 
+# copy example logging, and potentially overwrite with a logging.json in the configs directory
+COPY configs/nodeos/default-logging.json /eosio/logging.json
+COPY configs/*logging.json /eosio/logging.json
+
 # start nodeos
 WORKDIR /eosio
 CMD ["/eosio/entrypoint.sh"]

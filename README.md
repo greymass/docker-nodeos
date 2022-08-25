@@ -162,3 +162,42 @@ docker-compose up
 docker-compose exec nginx nginx -s reload
 ```
 
+# Logging
+
+A `logging.json` file can now be added to the `./configs` folder of the project to create a custom nodeos logging configuration.
+
+The file placed in this location will be included during the build process and used as nodeos starts up.
+
+### Remote endpoint for logging.json
+
+With this docker configuration designed to be scalable to multiple instances, a simple `logging.json` copy into the `configs` folder won't be able to identify individual containers. 
+
+For this reason, you can now input those values into the `.env` file:
+
+```
+# Remote Logging - Endpoint
+NODEOS_LOGGING_ENDPOINT=www.your.server.com:12201
+
+# Remote Logging - Operator Name
+NODEOS_LOGGING_OPERATOR=operator_name
+
+# Remote Logging - Network Name
+NODEOS_LOGGING_NETWORK=jungle4
+```
+
+When these values are found in the `.env` file, the initialization process of each container will modify the `logging.json` file to inject values relevant to each container. The resulting output will be similar to:
+
+```
+{
+    "name": "net",
+    "type": "gelf",
+    "args": {
+        "endpoint": "NODEOS_LOGGING_ENDPOINT",
+        "host": "${NETWORK}${HOSTNAME}",
+        "_operator": "NODEOS_LOGGING_OPERATOR",
+        "_network": "NODEOS_LOGGING_NETWORK"
+    },
+    "enabled": false
+}
+````
+

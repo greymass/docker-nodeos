@@ -41,6 +41,13 @@ echo unix-socket-path = $NODEOS_SOCK >> /eosio/sock.ini
 touch $NODEOS_SOCK
 chmod 777 $NODEOS_SOCK
 
+# Modify the logging.json to include an additional endpoint
+if [[ "${NODEOS_LOGGING_ENDPOINT}" ]]; then
+    echo "templating logging.json to include custom reporting endpoint"
+    apt -qq update && apt -qq install -y jq
+    echo $(jq ".appenders += [{\"name\":\"net\",\"type\":\"gelf\",\"args\":{\"endpoint\":\"$NODEOS_LOGGING_ENDPOINT\",\"host\":\"$NODEOS_LABEL\",\"_operator\":\"$NODEOS_LOGGING_OPERATOR\",\"_network\":\"$NODEOS_LOGGING_NETWORK\"},\"enabled\":false}]" /eosio/logging.json) > /eosio/logging.json
+fi
+
 # Create nginx upstream entry for this server
 echo "server unix:$NODEOS_SOCK fail_timeout=1 max_fails=3 weight=65535;" > /eosio/shared/nginx/${NODEOS_LABEL}.conf
 

@@ -25,6 +25,10 @@ RUN rm -rf /eosio/build/build /eosio/build/deps
 # configure nodeos
 COPY configs/config.ini /eosio/base.ini
 
+# copy example logging, and potentially overwrite with a logging.json in the configs directory
+COPY configs/nodeos/default-logging.json /eosio/logging.json
+COPY configs/*logging.json /eosio/logging.json
+
 # copy startup script
 COPY scripts/entrypoint-minimal-api.sh /eosio/entrypoint.sh
 RUN chmod +x /eosio/entrypoint.sh
