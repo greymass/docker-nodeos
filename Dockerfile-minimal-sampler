@@ -31,7 +31,7 @@ RUN chmod +x /eosio/entrypoint.sh
 
 # copy example logging, and potentially overwrite with a logging.json in the configs directory
 COPY configs/nodeos/default-logging.json /eosio/logging.json
-COPY configs/*logging.json /eosio/logging.json
+COPY README.md configs/*logging.json /eosio/
 
 # start nodeos
 WORKDIR /eosio
