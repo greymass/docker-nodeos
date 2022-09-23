@@ -7,9 +7,16 @@ services:
             file: ./configs/docker/nodeos-minimal-api.yaml
             service: nodeos
     nginx:
-        depends_on:
-            - nodeos
+#        depends_on:
+#            - nodeos
         extends:
             file: ./configs/docker/nginx.yaml
             service: nginx
         profiles: ["nginx"]
+    certbot:
+        image: certbot/certbot:latest
+        volumes:
+            - ./certbot/www/:/var/www/certbot/:rw
+            - ./certbot/logs:/var/log/letsencrypt/:rw
+            - ./certbot/letsencrypt/:/etc/letsencrypt/:rw
+
