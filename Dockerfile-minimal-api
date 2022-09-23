@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
 # install required software
-RUN apt-get update --fix-missing && apt-get install -y curl git dnsutils net-tools
+RUN apt-get update --fix-missing && apt-get install -y curl git dnsutils net-tools wget
 
 # setup folder structure
 RUN mkdir /eosio
@@ -15,12 +15,13 @@ ARG NODEOS_VERSION
 ENV NODEOS_VERSION $NODEOS_VERSION
 
 # build nodeos
-RUN git clone $NODEOS_REPOSITORY /eosio/build
 WORKDIR /eosio/build
-RUN git checkout $NODEOS_VERSION
+RUN git clone -b $NODEOS_VERSION $NODEOS_REPOSITORY /eosio/build
 RUN git submodule update --init --recursive
-RUN apt-get update --fix-missing && ./scripts/eosio_build.sh -y
+RUN apt-get update --fix-missing
+RUN ./scripts/install_deps.sh && ./scripts/pinned_build.sh /eosio/deps /eosio/build/build $(nproc)
 RUN cp /eosio/build/build/programs/nodeos/nodeos /eosio/nodeos
+RUN rm -rf /eosio/build/build /eosio/build/deps
 
 # configure nodeos
 COPY configs/config.ini /eosio/base.ini

@@ -24,17 +24,28 @@ cp configs/docker/default.env .env
 This file contains the following parameters:
 
 ```
+# The name of the network this environment is for (must be unique on the host machine)
+NETWORK_NAME=EOS
+
+# The port to expose the nodeos api(s) on the host machine
+NETWORK_PORT_API=8888
+
+# The port to expose the nodeos p2p procotol on the host machine
+NETWORK_PORT_P2P=9876
+
 # The git repository of the nodeos (EOSIO) repository to use
-NODEOS_REPOSITORY=https://github.com/EOSIO/eos.git
+NODEOS_REPOSITORY=https://github.com/AntelopeIO/leap.git
 
 # The branch/tag of nodeos to checkout during the build process
-NODEOS_VERSION=v2.1.0
+NODEOS_VERSION=v3.1.0
 
 # A snapshot (compressed as tar.gz) to use during the startup of this node
-NODEOS_SNAPSHOT=https://snapshots.greymass.network/jungle/latest.tar.gz
+#NODEOS_SNAPSHOT=https://snapshots.greymass.network/jungle/latest.tar.gz
+NODEOS_SNAPSHOT=https://snapshots.greymass.network/eos/latest.tar.gz
 
 # Peers to inject into the nodeos configuration 
-NODEOS_PEERS=peer.jungle3.alohaeos.com:9876 jungle.eosn.io:9876 jungle3.eosrio.io:58012
+#NODEOS_PEERS=peer.jungle3.alohaeos.com:9876 jungle.eosn.io:9876 jungle3.eosrio.io:58012
+NODEOS_PEERS=seed.greymass.com:9876 p2p.mainnet.eosrio.io:9876 p2p.donates2eden.io:9876 p2p.eoscafeblock.com:9000 p2p.eosdetroit.io:3018 peer.main.alohaeos.com:9876 p2p.eos42.io:9876 eos.seed.eosnation.io:9876
 ```
 
 The second thing you'll need to configure is the nodeos configuration file itself. Create a copy of this configuration file as outlined below, and it'll be passed to the container for use.
