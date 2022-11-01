@@ -29,10 +29,10 @@ This file contains the following parameters:
 
 ```
 # The git repository of the nodeos (EOSIO) repository to use
-NODEOS_REPOSITORY=https://github.com/eosnetworkfoundation/mandel.git
+NODEOS_REPOSITORY=https://github.com/AntelopeIO/leap.git
 
 # The branch/tag of nodeos to checkout during the build process
-NODEOS_VERSION=v3.1.0-rc3
+NODEOS_VERSION=v3.1.2
 
 # A snapshot (compressed as tar.gz) to use during the startup of this node
 NODEOS_SNAPSHOT=https://snapshots.greymass.network/jungle/latest.tar.gz
