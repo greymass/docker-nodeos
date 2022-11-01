@@ -1,3 +1,7 @@
+# Notice
+
+The `master` branch by default on this repository is for Antelope/Leap@3.1. If you are looking for a version that works with EOSIO/EOS@2.x, please check out the [v2.x branch](https://github.com/greymass/docker-nodeos/tree/v2.x) of this repository.
+
 # Requirements
 
 The usage of this repository makes use of `docker` and `docker-compose`. This root docker container can be orcehstrated into other platforms (Swarm, K8s, etc) as well so long as you understand how to deploy to them.
@@ -33,7 +37,7 @@ NODEOS_VERSION=v3.1.0-rc3
 # A snapshot (compressed as tar.gz) to use during the startup of this node
 NODEOS_SNAPSHOT=https://snapshots.greymass.network/jungle/latest.tar.gz
 
-# Peers to inject into the nodeos configuration 
+# Peers to inject into the nodeos configuration
 NODEOS_PEERS=peer.jungle3.alohaeos.com:9876 jungle.eosn.io:9876 jungle3.eosrio.io:58012
 ```
 
@@ -61,8 +65,7 @@ With the containers build, now you just need to run them.
 docker-compose up -d
 ```
 
-The nodeos instance within the container will bind to the ports on the host as defined in the `docker-compose.yaml` file. 
-
+The nodeos instance within the container will bind to the ports on the host as defined in the `docker-compose.yaml` file.
 
 # Stop the container
 
@@ -78,16 +81,16 @@ A number of configurations have been setup for different methods of operation. L
 
 ### API (Minimal)
 
-This is the default configuration shown in the documentation above. This type of configuration launches one or more nodeos processes from a snapshot and load balances API requests between them. They also are configured to only keep 1 days worth of recent blocks and have the account query API enabled. 
+This is the default configuration shown in the documentation above. This type of configuration launches one or more nodeos processes from a snapshot and load balances API requests between them. They also are configured to only keep 1 days worth of recent blocks and have the account query API enabled.
 
-This API configuration is meant to serve out most requests, with the exception being they won't be able to serve out older blocks (v1/chain/get_block). 
+This API configuration is meant to serve out most requests, with the exception being they won't be able to serve out older blocks (v1/chain/get_block).
 
 ```bash
 cp configs/docker/default.env .env
 cp configs/nodeos/example-minimal-api.config.ini configs/config.ini
 ```
 
-Once copied, edit these configuration files (if needed). 
+Once copied, edit these configuration files (if needed).
 
 If you had previously used the `docker-compose.override.yaml` file for another configuration, clear that out.
 
@@ -110,7 +113,7 @@ The above configuration can also be used to scale up multiple API instances, whi
 cp configs/nginx/nginx.conf configs/nginx.conf
 ```
 
-When starting, you'll just need to pass an extra parameter into the `docker-compose up` command outlined in the previous example. 
+When starting, you'll just need to pass an extra parameter into the `docker-compose up` command outlined in the previous example.
 
 ```bash
 docker-compose build
@@ -124,8 +127,6 @@ docker-compose build
 docker-compose --profile nginx up --scale nodeos=2
 ```
 
-
-
 ### P2P Relay (Minimal)
 
 This configuration launches a single nodeos instance from a snapshot with only the p2p network enabled. This can be used as a p2p relay for multiple API node instances to prevent excess network chatter. Since it is launched from a snapshot it won't be useful in resyncing blocks to other nodes in the p2p network.
@@ -137,7 +138,7 @@ cp configs/docker/default.env .env
 cp configs/nodeos/example-minimal-p2p.config.ini configs/config.ini
 ```
 
-Once copied, edit these configuration files (if needed). 
+Once copied, edit these configuration files (if needed).
 
 Then modify the `docker-compose.override.yaml` file to contain the following information:
 
@@ -156,6 +157,7 @@ Then build, and start it up:
 docker-compose build
 docker-compose up
 ```
+
 # Reload nginx upstreams
 
 ```
@@ -170,7 +172,7 @@ The file placed in this location will be included during the build process and u
 
 ### Remote endpoint for logging.json
 
-With this docker configuration designed to be scalable to multiple instances, a simple `logging.json` copy into the `configs` folder won't be able to identify individual containers. 
+With this docker configuration designed to be scalable to multiple instances, a simple `logging.json` copy into the `configs` folder won't be able to identify individual containers.
 
 For this reason, you can now input those values into the `.env` file:
 
@@ -199,5 +201,4 @@ When these values are found in the `.env` file, the initialization process of ea
     },
     "enabled": false
 }
-````
-
+```
