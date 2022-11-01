@@ -1,6 +1,6 @@
 # Notice
 
-The `master` branch by default on this repository is for Antelope/Leap@3.1. If you are looking for a version that works with EOSIO/EOS@2.x, please check out the [v2.x branch](https://github.com/greymass/docker-nodeos/tree/v2.x) of this repository.
+The `master` branch by default on this repository is for [Antelope/Leap@3.1](https://github.com/antelopeio/leap). If you are looking for a version that works with EOSIO/EOS@2.x, please check out the [v2.x branch](https://github.com/greymass/docker-nodeos/tree/v2.x) of this repository.
 
 # Requirements
 
