@@ -5,3 +5,5 @@ configs/nginx.conf
 downloads
 shared/nginx/*.conf
 shared/nodeos/*.sock
+shared/patches/*.patch
+shared/patches/*.diff

@@ -14,10 +14,14 @@ ENV NODEOS_REPOSITORY $NODEOS_REPOSITORY
 ARG NODEOS_VERSION
 ENV NODEOS_VERSION $NODEOS_VERSION
 
-# build nodeos
+# fetch nodeos
 WORKDIR /eosio/build
 RUN git clone -b $NODEOS_VERSION $NODEOS_REPOSITORY /eosio/build
 RUN git submodule update --init --recursive
+# apply any patches in the shared/patches folder
+RUN git apply ./shared/patches/*.diff || true
+RUN git apply ./shared/patches/*.patch || true
+# build nodeos
 RUN ./scripts/install_deps.sh && ./scripts/pinned_build.sh /eosio/deps /eosio/build/build $(nproc)
 RUN cp /eosio/build/build/programs/nodeos/nodeos /eosio/nodeos
 RUN rm -rf /eosio/build/build /eosio/build/deps
