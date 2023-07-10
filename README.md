@@ -8,6 +8,12 @@ The usage of this repository makes use of `docker` and `docker-compose`. This ro
 
 [A quick guide on setting up docker and docker-compose can be found here](https://support.netfoundry.io/hc/en-us/articles/360057865692-Installing-Docker-and-docker-compose-for-Ubuntu-20-04).
 
+# This branch is specifically allowed to apply a patch during build
+
+Download the patch file to the root folder of this project nanmed `patch.diff`.
+
+Setup as normal and run.
+
 # Get the code
 
 Pull down this repository.
@@ -143,12 +149,12 @@ Once copied, edit these configuration files (if needed).
 Then modify the `docker-compose.override.yaml` file to contain the following information:
 
 ```yaml
-version: '3.6'
+version: "3.6"
 services:
-    nodeos:
-        extends:
-            file: ./configs/docker/nodeos-minimal-p2p.yaml
-            service: nodeos
+  nodeos:
+    extends:
+      file: ./configs/docker/nodeos-minimal-p2p.yaml
+      service: nodeos
 ```
 
 Then build, and start it up:
