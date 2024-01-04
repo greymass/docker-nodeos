@@ -1,8 +1,20 @@
 FROM ubuntu:20.04
 
 # install required software
-RUN apt-get update --fix-missing && DEBIAN_FRONTEND=noninteractive apt-get install -y curl git dnsutils net-tools
-
+RUN apt-get update --fix-missing && DEBIAN_FRONTEND=noninteractive apt-get install -y curl \
+    git \
+    dnsutils \
+    net-tools \
+    build-essential \
+    cmake \
+    git \
+    libcurl4-openssl-dev \
+    libgmp-dev \
+    llvm-11-dev \
+    python3-numpy \
+    file \
+    zlib1g-dev \
+    g++-10
 # setup folder structure
 RUN mkdir /eosio
 RUN mkdir /eosio/build
@@ -18,9 +30,12 @@ ENV NODEOS_VERSION $NODEOS_VERSION
 WORKDIR /eosio/build
 RUN git clone -b $NODEOS_VERSION $NODEOS_REPOSITORY /eosio/build
 RUN git submodule update --init --recursive
-RUN ./scripts/install_deps.sh && ./scripts/pinned_build.sh /eosio/deps /eosio/build/build $(nproc)
+RUN mkdir -p build
+WORKDIR /eosio/build/build
+RUN cmake -DCMAKE_C_COMPILER=gcc-10 -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/lib/llvm-11 ..
+RUN make -j "$(nproc)" nodeos
 RUN cp /eosio/build/build/programs/nodeos/nodeos /eosio/nodeos
-RUN rm -rf /eosio/build/build /eosio/build/deps
+RUN rm -rf /eosio/build/build
 
 # configure nodeos
 COPY configs/config.ini /eosio/base.ini
