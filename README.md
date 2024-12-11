@@ -1,10 +1,10 @@
 # Notice
 
-The `master` branch by default on this repository is for [Antelope/Leap@3.1](https://github.com/antelopeio/leap). If you are looking for a version that works with [EOSIO/EOS@2.x](https://github.com/eosio/eos), please check out the [v2.x branch](https://github.com/greymass/docker-nodeos/tree/v2.x) of this repository.
+The `master` branch by default on this repository is for [Antelope/Spring@1.0.3](https://github.com/antelopeio/spring). If you are looking for other versions like Leap or EOSIO, refer to the different version branches in the repository.
 
 # Requirements
 
-The usage of this repository makes use of `docker` and `docker-compose`. This root docker container can be orcehstrated into other platforms (Swarm, K8s, etc) as well so long as you understand how to deploy to them.
+The usage of this repository makes use of `docker` and `docker-compose`. This root docker container can be orchestrated into other platforms (Swarm, K8s, etc) as well so long as you understand how to deploy to them.
 
 [A quick guide on setting up docker and docker-compose can be found here](https://support.netfoundry.io/hc/en-us/articles/360057865692-Installing-Docker-and-docker-compose-for-Ubuntu-20-04).
 
