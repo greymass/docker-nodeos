@@ -10,7 +10,7 @@ services:
             - 8888
             - 9876
         tmpfs:
-            - /ramdisk:defaults,nosuid,nodev,noatime,nodiratime,exec,size=64G
+            - /ramdisk:defaults,nosuid,nodev,noatime,nodiratime,exec,size=128G
         ulimits:
             nproc: 1048576
             nofile:

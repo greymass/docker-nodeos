@@ -28,16 +28,25 @@ cp configs/docker/default.env .env
 This file contains the following parameters:
 
 ```
+# The name of the network this environment is for (must be unique on the host machine)
+NETWORK_NAME=jungle
+
+# The port to expose the nodeos api(s) on the host machine
+NETWORK_PORT_API=8888
+
+# The port to expose the nodeos p2p procotol on the host machine
+NETWORK_PORT_P2P=9876
+
 # The git repository of the nodeos (EOSIO) repository to use
-NODEOS_REPOSITORY=https://github.com/AntelopeIO/leap.git
+NODEOS_REPOSITORY=https://github.com/AntelopeIO/spring.git
 
 # The branch/tag of nodeos to checkout during the build process
-NODEOS_VERSION=v3.1.2
+NODEOS_VERSION=v1.0.3
 
 # A snapshot (compressed as tar.gz) to use during the startup of this node
 NODEOS_SNAPSHOT=https://snapshots.greymass.network/jungle/latest.tar.gz
 
-# Peers to inject into the nodeos configuration
+# Peers to inject into the nodeos configuration 
 NODEOS_PEERS=peer.jungle3.alohaeos.com:9876 jungle.eosn.io:9876 jungle3.eosrio.io:58012
 ```
 
@@ -47,7 +56,7 @@ The second thing you'll need to configure is the nodeos configuration file itsel
 cp configs/nodeos/example-minimal-api.config.ini configs/config.ini
 ```
 
-This file is your standard nodeos configuration. More information is available on the [official documentation](https://developers.eos.io/manuals/eos/v2.0/nodeos/usage/nodeos-configuration).
+This file is your standard nodeos configuration. More information is available on the [official documentation](https://docs.eosnetwork.com/docs/latest/node-operation/getting-started/).
 
 # Build the container
 
